@@ -1,0 +1,3 @@
+variable "nameofthebucket" {
+    default  = "johnbucketone"
+}
