@@ -1,0 +1,38 @@
+1). What is statefile in Terraform ?
+Ans : The state file maintains a record of the current state of your infrastructure, including resource IDs, configurations, and metadata.
+      When you run terraform apply, Terraform compares the desired state in your configuration with the state file to determine the changes needed to bring the infrastructure in line with the configuration.
+      By default, Terraform creates a local state file named terraform.tfstate in the same directory as your Terraform configuration files.
+      For collaborative or production environments, it's recommended to store the state file remotely, using backends like Amazon S3, Azure Storage, or HashiCorp Consul.
+
+2). Can We create two  EC2 instances with same name ?
+Ans : No, it's not possible to create two EC2 instances with the exact same name within the same region and AWS account. 
+      Each resource in AWS, including EC2 instances, must have a unique identifier within its scope.
+
+3). What is the disadvantage of statefile in Terraform ?
+Ans : As we know that statefile records everything about the insfrastructure which we create whether it is EC2, S3, EKS, VPC etc.
+      What if any sensitive information like passwords are present in our infrastructure configuration, that sensitive information also recorded by statefile.
+      As we all keep our code on Github, Bitbucket ....along with Terraform infrastructure code , this statefile also stored on Git and other may access it which is not good.
+
+      Another problem is , suppose a DevOps Engineer needs to make an update to one infrastructure say EC2 instance, then what he will do was he will download the repository
+      and make the code changes . Suppose lets think after doing code changes he didnt given "Terraform apply" command and directly pushed to github. In this case statefile 
+      is not up-to-date and this leads to configuration messup
+
+      He needs to run the apply command and also needs to move the statefile to github along with code changes.
+
+      These drawbacks can be overcome by a concept called "REMOTE BACKEND".
+
+4). What is Remote Backend ?
+Ans : Instead of storing statefile in Github, If we configure Remote Backend in Terraform ....the statefile can be stored in Remote Backend.
+      Here are some comman remote backend options :
+      AWS S3 Bucket, Azurerm, Google Cloud Storage Bucket, Hashicorp Consoul
+
+      So if we use Remote Backend, AWS S3 Bucket will host our Statefile and this concept solves the 2 problems mentioned in above question
+      Now Terraform Code is on Github, whereas statefile is on S3 Bucket and devops engineers can happily make changes to terraform code and push only code related changes
+      and no need to worry about statefile, it will be up-to-date in S3 Bucket
+
+5). Terraform show command ?
+Ans : you can use terraform show to display the current state of your infrastructure. This includes details about the resources that have been created, modified, or destroyed.
+
+
+
+      
